@@ -1,37 +1,52 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Hind:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 
 :root {
-  --primary: #25d366;
-  /* The brand green as FOREGROUND is 1.98:1 on white, far under the 4.5:1 AA needs for text.
-     It stays the fill colour; anything rendering it as text or an icon uses --primary-text, the same
-     hue darkened until it clears 4.5:1 on all three light backgrounds it lands on: 4.95:1 on white,
-     4.73:1 on --bg-light, and 4.53:1 on --primary-soft, which is the tightest of the three and the
-     one the active sidebar item uses. */
-  --primary-text: #17813e;
-  --primary-hover: #1da851;
-  --primary-soft: rgba(37, 211, 102, 0.12);
-  --bg-light: #f8fafc;
-  --bg-white: #ffffff;
+  /* Team Shubham Rathi design system, matched directly against the campaign site's
+     tailwind.config.js and src/components/common/Button.jsx — not just a swapped accent color, but
+     the same primary/hover pair, the same warm ivory/stone/charcoal neutrals (replacing OpenWA's
+     cool Slate grays), and the same warm-tinted shadow recipe, so this dashboard and
+     shubhamrathi.org read as one product family instead of a reskinned SaaS template.
+
+     --primary is forest-700 (#1b3f1e) — the site's own Button.jsx `primary` variant
+     (`bg-forest-700 text-white`), not forest-600. White text on it clears 11.8:1 (AAA), which is
+     also why every white-on-primary button/badge/tag already in this codebase (and the one
+     previously-dark-text .btn-primary, fixed below) works cleanly. forest-700 already clears
+     11.8:1 as FOREGROUND text on white/--bg-light too (matches the site's `link`/`subtle` variants,
+     both `text-forest-700`), so --primary-text reuses the same value in light mode. Dark mode is
+     the one place forest-700 (already very dark) stops working as foreground text against a dark
+     surface, so it gets a lighter override there (see the dark-mode block below). */
+  --primary: #1b3f1e;
+  --primary-text: #1b3f1e;
+  --primary-hover: #142e17; /* forest-800 — matches Button.jsx's primary hover exactly */
+  --primary-soft: rgba(27, 63, 30, 0.14);
+  /* Warm ivory/stone/charcoal neutrals (site's surface/stone/charcoal scale) replacing OpenWA's
+     cool blue-gray Slate palette. */
+  --bg-light: #faf7f0; /* ivory-100 — site's surface.muted */
+  --bg-white: #ffffff; /* surface DEFAULT */
   --bg-card: #ffffff;
-  --text-primary: #0f172a; /* Slate 900 */
-  --text-secondary: #475569; /* Slate 600 */
-  --text-muted: #64748b; /* Slate 500; 4.76:1 on white (AA) */
-  --border: #e2e8f0; /* Slate 200 */
+  --text-primary: #211e1a; /* charcoal DEFAULT */
+  --text-secondary: #5d564a; /* stone-600 */
+  --text-muted: #7a7264; /* stone-500; 4.86:1 on white (AA) */
+  --border: #ddd9d0; /* stone-200 */
   --error: #ef4444;
   --success: #22c55e;
   --warning: #f59e0b;
   /* Status colours as FOREGROUND fail AA on light: error 3.76:1, success 2.28:1, warning 2.15:1.
      They stay the fill/border colours; text and icons use these darkened twins. Each clears 4.5:1
      against the darkest surface it actually lands on, which is not white but the 10-20% tint of its
-     own hue that the badges and callouts paint behind it. */
+     own hue that the badges and callouts paint behind it. Left as universal red/amber/green rather
+     than brand rose/saffron — status colors need to read as status at a glance, and forest-tinted
+     "success" would blur into the brand-primary color. */
   --error-text: #c63838;
   --success-text: #157c3b;
   --warning-text: #986207;
   --info: #2563eb; /* Blue 600 — info/permission/log badges + qr-ready pill */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --radius: 10px;
+  /* Warm-tinted shadows (site's boxShadow.sm/card/lifted recipe: rgba(20,20,15,…)) instead of
+     OpenWA's neutral black rgba(0,0,0,…) — cool black shadows read as generic-SaaS on a warm page. */
+  --shadow-sm: 0 1px 3px 0 rgba(20, 20, 15, 0.08), 0 1px 2px -1px rgba(20, 20, 15, 0.06);
+  --shadow-md: 0 2px 10px -2px rgba(20, 20, 15, 0.08), 0 1px 2px -1px rgba(20, 20, 15, 0.04);
+  --shadow-lg: 0 12px 32px -12px rgba(20, 20, 15, 0.22);
+  --radius: 12px;
 }
 
 /* Dark Mode */
@@ -40,13 +55,16 @@
      app theme, not just the OS preference — otherwise toggling dark while the OS is light left
      native dropdowns rendered in the light scheme (#249). */
   color-scheme: dark;
-  --bg-light: #0f172a; /* Slate 900 */
-  --bg-white: #1e293b; /* Slate 800 */
-  --bg-card: #1e293b;
-  --text-primary: #f1f5f9; /* Slate 100 */
-  --text-secondary: #cbd5e1; /* Slate 300 */
-  --text-muted: #94a3b8; /* Slate 400; 5.71:1 on Slate 800 (AA) */
-  --border: #334155; /* Slate 700 */
+  /* Warm navy/charcoal (site's navy/charcoal scale) instead of OpenWA's cool blue-gray Slate —
+     the site has no dark mode of its own to match exactly, so this stays in the same warm family
+     as the light palette above rather than falling back to a generic dark-UI blue-black. */
+  --bg-light: #151b1e; /* navy DEFAULT */
+  --bg-white: #1e262a; /* navy soft */
+  --bg-card: #1e262a;
+  --text-primary: #fffdf9; /* ivory-50 */
+  --text-secondary: #c2bcae; /* stone-300 */
+  --text-muted: #9c9484; /* stone-400; 5.11:1 on navy soft (AA) */
+  --border: #33302a; /* charcoal soft */
   --info: #60a5fa; /* Blue 400 — lighter so it reads over the dark translucent-blue tints */
   /* On the dark surfaces success and warning already clear AA (6.42:1 and 6.81:1), so they
      keep their base value; error is 4.06:1 there and is lightened instead. */
@@ -55,11 +73,14 @@
   --warning-text: var(--warning);
 
   --primary-soft: color-mix(in srgb, var(--primary) 18%, transparent);
-  /* On Slate 800 the brand green already measures 7.38:1, so dark keeps it for text too. */
-  --primary-text: var(--primary);
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+  /* --primary (forest-700) stays constant across themes — it's only ~1:1 as foreground text on
+     navy soft (both very dark), so dark mode swaps in forest-300 here instead: 5.91:1 on navy soft
+     (AA). Button fills (white text on forest-700, 11.8:1) don't need this override — only
+     standalone text/icons rendered directly on the page background do. */
+  --primary-text: #7dac7d;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 2px 10px -2px rgba(0, 0, 0, 0.32), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 12px 32px -12px rgba(0, 0, 0, 0.5);
 }
 
 /* Explicit light toggle: keep native controls light even if the OS prefers dark. */
@@ -74,13 +95,13 @@
        The Login screen never sets data-theme, so it relies solely on this block — without an
        explicit color-scheme the popup rendered light, leaving the light option text illegible (#249). */
     color-scheme: dark;
-    --bg-light: #0f172a;
-    --bg-white: #1e293b;
-    --bg-card: #1e293b;
-    --text-primary: #f1f5f9;
-    --text-secondary: #cbd5e1;
-    --text-muted: #94a3b8;
-    --border: #334155;
+    --bg-light: #151b1e;
+    --bg-white: #1e262a;
+    --bg-card: #1e262a;
+    --text-primary: #fffdf9;
+    --text-secondary: #c2bcae;
+    --text-muted: #9c9484;
+    --border: #33302a;
     --info: #60a5fa;
     /* On the dark surfaces success and warning already clear AA (6.42:1 and 6.81:1), so they
        keep their base value; error is 4.06:1 there and is lightened instead. */
@@ -88,12 +109,12 @@
     --success-text: var(--success);
     --warning-text: var(--warning);
     --primary-soft: color-mix(in srgb, var(--primary) 18%, transparent);
-    /* Must be restated here, not inherited: the light value (#17833f) measures 3.03:1 on Slate 800
-       and would fail worse than the brand green it replaced. On dark the brand green is 7.38:1. */
-    --primary-text: var(--primary);
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    /* Must be restated here, not inherited: the light value (forest-700) measures only ~1:1 on
+       navy soft. forest-300 clears 5.91:1 (AA) there instead. */
+    --primary-text: #7dac7d;
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.24);
+    --shadow-md: 0 2px 10px -2px rgba(0, 0, 0, 0.32), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 12px 32px -12px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -104,7 +125,8 @@
 body {
   margin: 0;
   font-family:
-    'Plus Jakarta Sans',
+    'Manrope',
+    'Noto Sans Devanagari',
     -apple-system,
     BlinkMacSystemFont,
     'Segoe UI',
